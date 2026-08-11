@@ -33,7 +33,7 @@ async def create_container(name: str, image: str, user_id: str):
             detach=True,
             name=name,
             network="evasim_network",
-            environment={"USER_ID": user_id},
+            environment={"USER_ID": user_id, "MQTT_BROKER_ADDRESS":"mosquitto" },
             volumes={
                 scripts_dir: {
                     "bind": "/app/sim/evaml_2025_server/eva_scripts",

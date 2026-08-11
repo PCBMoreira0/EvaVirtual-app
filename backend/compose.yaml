@@ -20,8 +20,18 @@ services:
     build:
       context: ./broker
       dockerfile: Dockerfile
+    environment:
+      - MQTT_BROKER_ADDRESS=mosquitto
     networks:
       - evasim_network
+
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    ports:
+      - "1883:1883"
+    networks:
+      - evasim_network
+
 
 networks:
   evasim_network:

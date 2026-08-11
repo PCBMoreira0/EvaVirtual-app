@@ -8,8 +8,6 @@ app = FastAPI()
 
 mqtt_communicator = MqttCommunicator(broker_address=os.getenv("MQTT_BROKER_ADDRESS", "host.docker.internal"), port=int(os.getenv("MQTT_BROKER_PORT", 1883)), user_id=os.getenv("USER_ID", "default_user"))
 
-# mqtt_communicator = MqttCommunicator(broker_address=os.getenv("MQTT_BROKER_ADDRESS", "localhost"), port=int(os.getenv("MQTT_BROKER_PORT", 1883)), user_id=os.getenv("USER_ID", "default_user"))
-
 queue = asyncio.Queue()
 
 def on_message(client, userdata, message):
