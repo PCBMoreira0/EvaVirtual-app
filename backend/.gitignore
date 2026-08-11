@@ -1,6 +1,4 @@
 __pycache__/
 .vscode/
 venv/
-audio_cache_files/
-audio_files/
 ibm_cred.txt
