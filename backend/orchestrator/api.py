@@ -7,6 +7,7 @@ import speech_recognition
 from ibm_watson import TextToSpeechV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from pydantic import BaseModel
+import emotion
 
 import asyncio
 from fastapi.responses import FileResponse, StreamingResponse
@@ -87,7 +88,6 @@ async def get_stt(file : UploadFile):
 #user emotion
 @router.post("/emotion")
 async def get_emotion(file : UploadFile):
-    import emotion
     loop = asyncio.get_event_loop()
     result = await loop.run_in_executor(executor, emotion.run_from_image, await file.read())
     

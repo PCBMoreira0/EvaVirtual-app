@@ -1,3 +1,9 @@
+.git/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
 audio_files/
 saved_models/
 eva_scripts/

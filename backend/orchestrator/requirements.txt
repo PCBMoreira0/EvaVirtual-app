@@ -1,13 +1,10 @@
 fastapi
 uvicorn[standard]
 websockets
-asyncio
 docker
-
 ibm_watson
 numpy
 tensorflow-cpu
 mediapipe
-opencv-python-headless
 SpeechRecognition
 python-multipart

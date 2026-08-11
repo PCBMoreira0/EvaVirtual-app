@@ -7,8 +7,8 @@ services:
       - "8000:8000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /orchestrator/audio_files:/app/audio_files
-      - /orchestrator/saved_models:/app/saved_models
+      - ./orchestrator/audio_files:/app/audio_files
+      - ./orchestrator/saved_models:/app/saved_models
     networks:
       - evasim_network
     environment:
