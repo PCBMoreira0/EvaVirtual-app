@@ -55,16 +55,17 @@ git submodule update --init --recursive
 
 ### Configurando o Backend
 
-1. Na pasta raiz do backend, adicione as credenciais da IBM Watson no arquivo `ibm_cred.txt` na pasta do `orchestrator`.
+1. Crie o arquivo ibm_cred.txt dentro da pasta backend/orchestrator e coloque sua chave da IBM Watson nele.
 2. Crie a imagem do simulador rodando:
 ```bash
+cd backend
 docker build -t evasim/simulator:latest -f simulator/Dockerfile simulator/
 ```
 
 3. Inicie a infraestrutura e o orquestrador via Docker:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 O orquestrador estará disponível em `http://localhost:8000`.

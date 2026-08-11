@@ -405,4 +405,9 @@ public class EvaRobotControll : MonoBehaviour
     {
         await StopRobot();
     }
+
+    void OnDestroy()
+    {
+        StopRobot();
+    }
 }
