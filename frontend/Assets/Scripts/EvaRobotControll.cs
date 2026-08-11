@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -116,7 +117,7 @@ public class EvaRobotControll : MonoBehaviour
         OnSimulationStarted?.Invoke();
     }
 
-    public async void StopRobot()
+    public async Task StopRobot()
     {
         await webCommunication.Disconnect();
         await apiCommunication.DeleteSimulator();
@@ -400,8 +401,8 @@ public class EvaRobotControll : MonoBehaviour
         Camera.main.transform.position = originalCameraPosition;
     }
 
-    private void OnApplicationQuit()
+    public async void OnApplicationQuit()
     {
-        // StartCoroutine(webCommunication.DeleteSimulator());
+        await StopRobot();
     }
 }
