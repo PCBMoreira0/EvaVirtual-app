@@ -1,0 +1,29 @@
+services:
+  app:
+    build: 
+      context: ./orchestrator
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /orchestrator/audio_files:/app/audio_files
+      - /orchestrator/saved_models:/app/saved_models
+    networks:
+      - evasim_network
+    environment:
+      - EVA_SCRIPTS_DIR=${PWD}/orchestrator/eva_scripts
+    depends_on:
+      - broker
+
+  broker:
+    build:
+      context: ./broker
+      dockerfile: Dockerfile
+    networks:
+      - evasim_network
+
+networks:
+  evasim_network:
+    name: evasim_network
+    driver: bridge

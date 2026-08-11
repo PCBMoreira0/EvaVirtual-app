@@ -32,7 +32,7 @@ async def create_container(name: str, image: str, user_id: str):
             image,
             detach=True,
             name=name,
-            network="orchestrator_evasim_network",
+            network="evasim_network",
             environment={"USER_ID": user_id},
             volumes={
                 scripts_dir: {
@@ -58,7 +58,7 @@ async def create_container(name: str, image: str, user_id: str):
 @app.post("/init")
 async def init():
     global counter
-    simulator_id = await create_container("container_simulator_" + str(counter), "evasim/simulator:dev", str(counter))
+    simulator_id = await create_container("container_simulator_" + str(counter), "evasim/simulator:latest", str(counter))
     if simulator_id is None:
         return {"message": "Failed to create simulation environment", "user_id": counter}
     
