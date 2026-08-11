@@ -4,6 +4,10 @@ O **EvaSim** é uma aplicação de simulação em 3D desenvolvida como parte de 
 
 Este projeto provê um ambiente virtual de testes e interações que simula o robô físico "Eva". Ele é totalmente integrado ao software controlador do robô original por meio de APIs, permitindo que pesquisadores e profissionais de saúde testem scripts de comportamento, fluxos de conversação e respostas emocionais antes de levá-los ao hardware real.
 
+<p align="center">
+  <img src="docs/Tela_Eva_Virtual.png" width="250">
+</p>
+
 ## Principais Recursos
 
 A simulação busca replicar fielmente as capacidades expressivas e comunicativas do robô físico:
@@ -28,7 +32,16 @@ Um servidor robusto baseado em **FastAPI** e **Docker** que orquestra a intelig�
 
 - **Orquestrador:** Cria ambientes isolados (containers Docker) para cada usuário/sessão iniciada.
 - **Comunicação Bidirecional:** Utiliza **WebSockets** para comunicação cliente-servidor e um Broker **MQTT** (Paho) para rotear mensagens de comando internos.
-- **Gerenciador de Mídia:** Armazena e serve arquivos de áudio dinâmicos gerados pelas interações.
+
+#### Arquitetura Geral
+<p align="center">
+  <img src="docs/ArquiteturaGeral.png" width="1000">
+</p>
+
+#### Arquitetura de Comunicação
+<p align="center">
+  <img src="docs/ArquiteturaMQTT.png" width="600">
+</p>
 
 ## Como Executar o Projeto
 
@@ -55,7 +68,7 @@ git submodule update --init --recursive
 
 ### Configurando o Backend
 
-1. Crie o arquivo ibm_cred.txt dentro da pasta backend/orchestrator e coloque sua chave da IBM Watson nele.
+1. Crie o arquivo ibm_cred.txt dentro da pasta `backend/orchestrator` e coloque sua chave da IBM Watson nele.
 2. Crie a imagem do simulador rodando:
 ```bash
 cd backend
@@ -75,6 +88,14 @@ O orquestrador estará disponível em `http://localhost:8000`.
 1. Abra o diretório `frontend` no Unity Hub.
 2. Na pasta `Scenes`, abra a cena principal do simulador.
 3. Certifique-se de que o backend local está rodando e execute o projeto dando Play no editor (ou faça o *build* para a plataforma desejada).
+
+Na aba [Releases](https://github.com/PCBMoreira0/EvaVirtual-app/releases) é possível baixar a versão de Windows e Android, caso não queira abrir o projeto Unity.
+
+Na aba de configurações do EvaVirtual, altere o IP para o IP que o backend está hospedado e digite o nome do script que quer executar (veja as opções em `orchestrator/eva_scripts`)
+
+<p align="center">
+  <img src="docs/Tela_config_Eva_Virtual.png" width="250">
+</p>
 
 ## Scripts (EvaML)
 
