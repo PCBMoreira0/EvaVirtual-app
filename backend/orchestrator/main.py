@@ -25,8 +25,10 @@ user_ids : dict[str, str] = {}
 counter = 1
 
 
-async def create_container(name: str, image: str, user_id: str):
+async def create_container(name: str, user_id: str):
     scripts_dir = os.getenv("EVA_SCRIPTS_DIR", "./eva_scripts")
+    image = os.getenv("EVA_SIMULATOR_IMAGE", "evasim/simulator:latest")
+
     try:
         container = docker_client.containers.run(
             image,
@@ -48,7 +50,7 @@ async def create_container(name: str, image: str, user_id: str):
         return container.id
     
     except docker.errors.ImageNotFound:
-        print("Error: Image not found. Make sure Docker is running and connected.")
+        print(f"Imagem '{image}' não encontrada. Rode 'docker compose up --build' ou faça a build da imagem de simulator com o nome 'evasim/simulator:latest'")
         return None
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -58,7 +60,7 @@ async def create_container(name: str, image: str, user_id: str):
 @app.post("/init")
 async def init():
     global counter
-    simulator_id = await create_container("container_simulator_" + str(counter), "evasim/simulator:latest", str(counter))
+    simulator_id = await create_container("container_simulator_" + str(counter), str(counter))
     if simulator_id is None:
         return {"message": "Failed to create simulation environment", "user_id": counter}
     

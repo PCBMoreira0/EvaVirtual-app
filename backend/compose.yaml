@@ -1,4 +1,14 @@
 services:
+  simulator-image:
+    build:
+      context: ./simulator
+      dockerfile: Dockerfile
+    image: evasim/simulator:latest
+    entrypoint: ["true"]
+    restart: "no"
+    networks:
+      - evasim_network
+
   app:
     build: 
       context: ./orchestrator
@@ -13,8 +23,12 @@ services:
       - evasim_network
     environment:
       - EVA_SCRIPTS_DIR=${PWD}/orchestrator/eva_scripts
+      - EVA_SIMULATOR_IMAGE=evasim/simulator:latest
     depends_on:
-      - broker
+      broker:
+        condition: service_started
+      simulator-image:
+        condition: service_completed_successfully
 
   broker:
     build:
