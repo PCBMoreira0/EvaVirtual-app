@@ -9,6 +9,7 @@ from websocket_manager import WebSocketManager
 import websockets
 import api
 import os
+from pathlib import Path
 
 app = FastAPI()
 
@@ -23,6 +24,44 @@ websocket_manager = WebSocketManager()
 user_ids : dict[str, str] = {}
 
 counter = 1
+
+SIMULATOR_DIR = Path(
+    os.getenv("EVA_SIMULATOR_DIR", Path(__file__).resolve().parent.parent / "simulator")
+)
+
+_build_lock = asyncio.Lock()  # evita builds simultâneos da mesma imagem
+
+
+def _ensure_image_sync(image: str) -> None:
+    try:
+        docker_client.images.get(image)
+        return 
+    except docker.errors.ImageNotFound:
+        pass
+
+    if not (SIMULATOR_DIR / "Dockerfile").exists():
+        raise FileNotFoundError(f"Dockerfile não encontrado em {SIMULATOR_DIR}")
+
+    print(f"Imagem '{image}' não encontrada. Fazendo build a partir de {SIMULATOR_DIR}...")
+    try:
+        _, logs = docker_client.images.build(
+            path=str(SIMULATOR_DIR),
+            tag=image,
+            rm=True,
+        )
+        for chunk in logs:
+            if "stream" in chunk:
+                print(chunk["stream"], end="")
+    except docker.errors.BuildError as e:
+        for chunk in e.build_log:
+            if "stream" in chunk:
+                print(chunk["stream"], end="")
+        raise
+
+
+async def ensure_image(image: str) -> None:
+    async with _build_lock:
+        await asyncio.to_thread(_ensure_image_sync, image)
 
 
 async def create_container(name: str, image: str, user_id: str):

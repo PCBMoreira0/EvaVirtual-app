@@ -1,10 +1,18 @@
 from paho.mqtt import client as mqtt_client
 import os
+import time
     
 address = os.getenv('MQTT_BROKER_ADDRESS', 'host.docker.internal')
 print("Broker address: " + address)
 client = mqtt_client.Client()
-client.connect(address, 1883, 60)
+
+while True:
+    try:
+        client.connect(address, 1883, 60)
+        break
+    except OSError as e:
+        print(f"Falha ao conectar em {address}: {e}. Tentando novamente em 2s...")
+        time.sleep(2)
 
 def on_message(client, userdata, message):
     if message.topic.startswith("WEBSOCKET/BROKER"):
